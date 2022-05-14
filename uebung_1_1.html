@@ -37,6 +37,15 @@
 
     var simpsonJSON = '[{"firstname":"Bart","name":"Simpson","age":10,"sex":"m"},{"firstname":"Homer","name":"Simpson","age":36,"sex":"m"},{"firstname":"Lisa","name":"Simpson","age":8,"sex":"w"},{"firstname":"Marge","name":"Simpson","age":34,"sex":"w"},{"firstname":"Maggie","name":"Simpson","age":1,"sex":"w"},{"firstname":"Hugo","name":"Simpson","age":10,"sex":"m"}]';
 
+    let list = document.querySelector('#liste');
+    let simpsonArray = JSON.parse(simpsonJSON);
+
+    for (let simpson of simpsonArray) {
+        let li = document.createElement('li');
+        li.innerHTML = `${simpson.firstname} ${simpson.name} (${simpson.age})`;
+
+        list.appendChild(li);
+    }
 </script>
 </body>
 </html>
