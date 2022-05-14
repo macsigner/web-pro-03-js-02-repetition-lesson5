@@ -12,6 +12,7 @@
             background-attachment: fixed;
             background-position: center;
             background-size: cover;
+            cursor: none;
         }
 
         #roadster {
@@ -22,11 +23,12 @@
             position: absolute;
             padding: 0;
             margin: 0;
+            transform: translate(-50%, -50%);
         }
     </style>
 </head>
-<img id="roadster" src="images/roadster.png">
 <body>
+<img id="roadster" src="images/roadster.png">
 <script>
     /* Aufgabe:
      * Heute schicken wir einen Tesla ins All.
@@ -40,7 +42,11 @@
      *
      * Tipps: Du benötigst dazu den mousemove Event, die Style Attribute und die Position des Cursors aus dem Event.
      */
-
+    let roadster = document.querySelector('#roadster');
+    document.addEventListener('mousemove', (e) => {
+        roadster.style.setProperty('left', e.clientX + 'px');
+        roadster.style.setProperty('top', e.clientY + 'px');
+    });
 </script>
 </body>
 </html>
