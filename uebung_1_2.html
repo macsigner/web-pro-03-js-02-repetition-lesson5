@@ -8,11 +8,23 @@
             font-family: "Helvetica Neue", sans-serif;
             font-weight: 300;
         }
+
+        #form {
+            margin: 0;
+        }
+
+        .user-name {
+            margin: 0;
+            padding: 0;
+        }
     </style>
 </head>
 
-<h1>Hallo NAME!</h1>
-
+<h1>Hallo <span class="user-name">NAME</span>!</h1>
+<form id="form">
+    <input type="text" name="name" id="name" required>
+    <button>Speichern</button>
+</form>
 <body>
 <script>
     /* Aufgabe:
@@ -28,6 +40,30 @@
      z.B. <h1>Hallo Pascal!</h1>
     */
 
+    let form = document.querySelector('#form');
+    let input = document.querySelector('#name');
+    let elUserName = document.querySelector('.user-name');
+
+    updateTitle();
+    form.addEventListener('submit', updateName);
+
+    function updateTitle() {
+        let userName = localStorage.getItem('user-name');
+
+        if (userName) {
+            elUserName.innerHTML = userName;
+        }
+    }
+
+    function updateName(e) {
+        e.preventDefault();
+        localStorage.setItem('user-name', input.value.trim());
+
+        updateTitle();
+
+        e.target.closest('form').reset();
+        input.focus();
+    }
 </script>
 </body>
 </html>
