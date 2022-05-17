@@ -8,6 +8,10 @@
             font-family: "Helvetica Neue", sans-serif;
             font-weight: 300;
         }
+
+        button {
+            margin: 0;
+        }
     </style>
 </head>
 
@@ -45,8 +49,39 @@
      </ul>
     */
 
-    var simpsonJSON = '[{"firstname":"Bart","name":"Simpson","age":10,"sex":"m"},{"firstname":"Homer","name":"Simpson","age":36,"sex":"m"},{"firstname":"Lisa","name":"Simpson","age":8,"sex":"w"},{"firstname":"Marge","name":"Simpson","age":34,"sex":"w"},{"firstname":"Maggie","name":"Simpson","age":1,"sex":"w"},{"firstname":"Hugo","name":"Simpson","age":10,"sex":"m"}]';
+    let simpsonJSON = '[{"firstname":"Bart","name":"Simpson","age":10,"sex":"m"},{"firstname":"Homer","name":"Simpson","age":36,"sex":"m"},{"firstname":"Lisa","name":"Simpson","age":8,"sex":"w"},{"firstname":"Marge","name":"Simpson","age":34,"sex":"w"},{"firstname":"Maggie","name":"Simpson","age":1,"sex":"w"},{"firstname":"Hugo","name":"Simpson","age":10,"sex":"m"}]';
+    let simpsonsArray = JSON.parse(simpsonJSON);
 
+    let list = document.querySelector('#liste');
+    list.addEventListener('click', delegationListener);
+
+    for (let simpson of simpsonsArray) {
+        addEntry(simpson);
+    }
+
+    let deleteListItem = (el) => {
+        el.closest('li').remove();
+    }
+
+    function delegationListener(e) {
+        switch (e.target.tagName) {
+            case 'BUTTON':
+                deleteListItem(e.target);
+        }
+    }
+
+    function addEntry(entry) {
+        let li = document.createElement('li');
+
+        li.innerHTML = `${entry.firstname} ${entry.firstname}, <em>${entry.age}</em> <button>X</button>`;
+
+        li.addEventListener('animationend', e => {
+            e.target.closest('li').classList.remove('animation-up');
+            e.target.closest('li').classList.remove('animation-down');
+        })
+
+        list.appendChild(li);
+    }
 </script>
 </body>
 </html>
