@@ -9,7 +9,21 @@
             font-weight: 300;
         }
 
-        button {
+        button, input, label {
+            margin: 0;
+        }
+
+        label {
+            padding: 0;
+        }
+
+        #form {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(10px, 1fr));
+            grid-gap: 10px;
+        }
+
+        #form > * {
             margin: 0;
         }
     </style>
@@ -19,6 +33,13 @@
 
 <ul id="liste">
 </ul>
+
+<form id="form">
+    <label>Vorname<br><input type="text" id="firstname" name="firstname" required></label>
+    <label>Name<br><input type="text" id="name" name="name" required></label>
+    <label>Alter<br><input type="number" id="age" name="age" pattern="" min="0" required></label>
+    <button type="submit">Eintrag hinzufügen</button>
+</form>
 
 <body>
 <script>
@@ -54,10 +75,17 @@
 
     let list = document.querySelector('#liste');
     list.addEventListener('click', delegationListener);
+    let submitButton = document.querySelector('button[type="submit"]');
 
     for (let simpson of simpsonsArray) {
         addEntry(simpson);
     }
+
+    let form = document.querySelector('#form');
+    form.addEventListener('submit', addEntryFromForm);
+    form.addEventListener('input', checkValidity);
+
+    checkValidity();
 
     let deleteListItem = (el) => {
         el.closest('li').remove();
@@ -75,12 +103,49 @@
 
         li.innerHTML = `${entry.firstname} ${entry.firstname}, <em>${entry.age}</em> <button>X</button>`;
 
-        li.addEventListener('animationend', e => {
-            e.target.closest('li').classList.remove('animation-up');
-            e.target.closest('li').classList.remove('animation-down');
-        })
-
         list.appendChild(li);
+    }
+
+    function addEntryFromForm(e) {
+        e.preventDefault();
+
+        if (checkValidity()) {
+            addEntry(getFormValues());
+
+            form.reset();
+
+            checkValidity();
+
+            form.querySelector('input').focus();
+        }
+    }
+
+    function checkValidity() {
+        let isValid = true;
+        let inputs = document.querySelectorAll('input');
+
+        for (let input of inputs) {
+            isValid = isValid && input.checkValidity();
+        }
+
+        if (isValid) {
+            submitButton.disabled = false;
+        } else {
+            submitButton.disabled = true;
+        }
+
+        return isValid;
+    }
+
+    function getFormValues() {
+        let formData = new FormData(form);
+        let obj = {};
+
+        for (let entry of formData.entries()) {
+            obj[entry[0]] = entry[1];
+        }
+
+        return obj;
     }
 </script>
 </body>
